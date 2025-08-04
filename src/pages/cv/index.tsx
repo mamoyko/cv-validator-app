@@ -128,7 +128,4 @@ export default function CvFormPage() {
         </div>
     );
 }
-function useEffect(arg0: () => void, arg1: any[]) {
-    throw new Error("Function not implemented.");
-}
 

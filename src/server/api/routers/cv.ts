@@ -27,8 +27,12 @@ export const cvRouter = createTRPCRouter({
       const buffer = Buffer.from(input.pdfBase64, "base64");
       const pdfData = await pdfParse(buffer);
       const fileName = `${uuidv4()}.pdf`;
-      const { data, error } = await supabase.storage
-        .from(process.env.SUPABASE_BUCKET as string)
+
+      const bucket = process.env.SUPABASE_BUCKET;
+      if (!bucket) throw new Error("Missing SUPABASE_BUCKET env variable");
+
+      const { error } = await supabase.storage
+        .from(bucket)
         .upload(fileName, buffer, {
           contentType: "application/pdf",
           upsert: false,
@@ -38,9 +42,8 @@ export const cvRouter = createTRPCRouter({
         throw new Error("Failed to upload PDF: " + error.message);
       }
 
-      const results = supabase
-        .storage
-        .from(process.env.SUPABASE_BUCKET as string)
+      const results = supabase.storage
+        .from(bucket)
         .getPublicUrl(fileName);
 
       console.log("Uploaded PDF to Supabase:", results.data.publicUrl);
@@ -71,10 +74,7 @@ export const cvRouter = createTRPCRouter({
       });
 
       const result =
-        completion.choices &&
-        completion.choices[0] &&
-        completion.choices[0].message &&
-        typeof completion.choices[0].message.content === "string"
+        typeof completion.choices?.[0]?.message?.content === "string"
           ? completion.choices[0].message.content
           : "No response from GPT.";
 
