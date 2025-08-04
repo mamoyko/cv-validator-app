@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Existing default model — optional to keep
+model Post {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+model CvSubmission {
+  id         String   @id @default(cuid())
+  fullName   String
+  email      String
+  phone      String
+  skills     String
+  experience String
+  pdfUrl     String?   // e.g., link to Supabase Storage or S3
+  isValid    Boolean?  // Set after AI validation
+  createdAt  DateTime @default(now())
+}

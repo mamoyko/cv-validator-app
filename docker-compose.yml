@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  web:
+    container_name: cv-form-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://<your-db-user>:<your-db-pass>@<your-supabase-host>:5432/<your-db-name>
+      - DIRECT_URL=postgresql://<your-db-user>:<your-db-pass>@<your-supabase-host>:5432/<your-db-name>
+      - NEXT_PUBLIC_SUPABASE_URL=https://<your-supabase-project>.supabase.co
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
+      - OPENAI_API_KEY=<your-openai-api-key>
+      - SUPABASE_BUCKET=<your-bucket-name>
+    volumes:
+      - .:/app
+    command: npm run dev
