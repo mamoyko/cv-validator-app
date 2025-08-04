@@ -29,6 +29,14 @@
 │ - Compare with submitted form data │
 └────────────────────────────────────┘
 
+
+
+## SETUP
+
+npm install
+npm run dev
+localhost:3000/cv
+
 ## 🧰 Tech Stack Used
 
 ### Frontend
