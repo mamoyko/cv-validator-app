@@ -42,7 +42,11 @@ export default function CvFormPage() {
                 const result = reader.result as string;
                 // Strip the prefix: "data:application/pdf;base64,"
                 const base64 = result.split(",")[1];
-                resolve(base64);
+                if (base64 !== undefined) {
+                    resolve(base64);
+                } else {
+                    reject(new Error("Failed to extract base64 from file."));
+                }
             };
             reader.onerror = reject;
         });
